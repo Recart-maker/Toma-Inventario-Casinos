@@ -1,3 +1,8 @@
+// Ensure XLSX library is available
+if (typeof XLSX === 'undefined') {
+    throw new Error('XLSX library is not loaded. Please include it in your project.');
+}
+
 const fechaInventarioElement = document.getElementById('fecha-inventario');
 const totalInventarioElement = document.getElementById('total-inventario');
 const inventoryBody = document.getElementById('inventory-body');
@@ -14,7 +19,7 @@ const casinoNameInput = document.getElementById('casino-name');
 const agregarItemBtn = document.getElementById('btn-agregar-item');
 
 let inventoryData = JSON.parse(localStorage.getItem('inventoryData')) || [];
-let casinoName = localStorage.getItem('casinoName') || '';
+let casinoName = String(localStorage.getItem('casinoName') || '');
 
 casinoNameInput.value = casinoName;
 
@@ -151,31 +156,58 @@ descargarExcelBtn.addEventListener('click', () => {
         [`Nombre del Casino:`, casinoName],
         [],
         ["CODIGO", "PRODUCTO", "UN", "CANTIDAD", "VALOR", "TOTAL"],
-        ...inventoryData.map(item => [item.codigo, item.producto, item.unidad || '', item.cantidad.toString().replace('.', ','), item.valor, item.cantidad * item.valor]),
+        ...inventoryData.map(item => [
+            item.codigo,
+            item.producto,
+            item.unidad || '',
+            parseFloat(item.cantidad.toString().replace(',', '.')), // Ensure quantity is a number
+            parseFloat(item.valor), // Ensure valor is a number
+            parseFloat((item.cantidad * item.valor).toFixed(2)) // Calculate total and ensure it's a number
+        ]),
         [],
-        [`Total Inventario:`, formatCLP(calcularTotalInventario())]
+        [`Total Inventario:`, calcularTotalInventario()] // Keep as number for now
     ];
     const ws = XLSX.utils.aoa_to_sheet(wsData);
 
-    // Formatear números como texto en Excel
-    const numFmt = "#,##0.00"; // Formato numérico
-    inventoryData.forEach((item, index) => {
-        const rowNum = index + 4; // Iniciar desde la cuarta fila (después del nombre del casino y encabezados)
-        XLSX.utils.sheet_add_aoa(ws, [[item.valor, item.cantidad * item.valor]], { origin: `E${rowNum}` });
-        ws[`E${rowNum}`].t = 'n'; // Tipo número
-        ws[`E${rowNum}`].z = numFmt; // Formato
-        ws[`F${rowNum}`].t = 'n';
-        ws[`F${rowNum}`].z = numFmt;
-    });
-    const totalRow = inventoryData.length + 6;
-    ws[`B${totalRow}`].t = 's'; // Tipo string para "Total Inventario:"
-    ws[`B${totalRow}`].s = { font: { bold: true } };
-    ws[`C${totalRow}`] = { t: 's', v: formatCLP(calcularTotalInventario()), s: { font: { bold: true } } };
+    // Apply number formatting to the 'Valor' and 'Total' columns using a more direct approach
+    const numFmt = "#,##0.00";
+
+    // Get the range of the worksheet
+    const range = XLSX.utils.decode_range(ws['!ref']);
+
+    // Apply format to 'Valor' column (E)
+    for (let row = 3; row <= range.e.r - 2; row++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row, c: 4 });
+        if (ws[cellAddress]) {
+            ws[cellAddress].t = 'n';
+            ws[cellAddress].z = numFmt;
+        }
+    }
+
+    // Apply format to 'Total' column (F)
+    for (let row = 3; row <= range.e.r - 2; row++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row, c: 5 });
+        if (ws[cellAddress]) {
+            ws[cellAddress].t = 'n';
+            ws[cellAddress].z = numFmt;
+        }
+    }
+
+    // Bold the "Total Inventario" label and value
+    const totalRowNumber = range.e.r;
+    const totalLabelAddress = XLSX.utils.encode_cell({ r: totalRowNumber, c: 0 });
+    const totalValueAddress = XLSX.utils.encode_cell({ r: totalRowNumber, c: 1 });
+
+    if (ws[totalLabelAddress]) ws[totalLabelAddress].s = { font: { bold: true } };
+    if (ws[totalValueAddress]) {
+        ws[totalValueAddress].s = { font: { bold: true }, numFmt: numFmt }; // Apply format here as well
+        ws[totalValueAddress].t = 'n';
+        ws[totalValueAddress].v = calcularTotalInventario(); // Use the raw number
+    }
 
     XLSX.utils.book_append_sheet(wb, ws, "Inventario");
     XLSX.writeFile(wb, `inventario_${new Date().toISOString().slice(0, 10)}.xlsx`);
 });
-
 mostrarFechaActual();
 renderizarInventario();
 
