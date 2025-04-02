@@ -1,0 +1,155 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+h1 {
+    font-size: 2.2em;
+    color: #007bff;
+    margin: 0;
+}
+
+h1 input[type="text"] {
+    margin-left: 15px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+#fecha-inventario, #total-inventario {
+    font-size: 0.9em;
+    color: #555;
+}
+
+#total-inventario {
+    font-weight: bold;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.controls button, .controls input[type="file"] {
+    padding: 12px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease;
+}
+
+.controls button {
+    background-color: #28a745;
+    color: white;
+}
+
+.controls button:hover {
+    background-color: #218838;
+}
+
+.controls input[type="file"] {
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+h2 {
+    font-size: 1.6em;
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+#add-item-form {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 12px;
+}
+
+#add-item-form label {
+    text-align: right;
+    font-weight: bold;
+    color: #555;
+}
+
+#add-item-form input[type="text"], #add-item-form input[type="number"] {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+#add-item-form button {
+    grid-column: span 2;
+    padding: 12px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+#add-item-form button:hover {
+    background-color: #0056b3;
+}
+
+#inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#inventory-table th, #inventory-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+#inventory-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+#inventory-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.editable-cantidad {
+    width: 90px;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 0.9em;
+}

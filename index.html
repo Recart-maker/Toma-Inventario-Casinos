@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toma de Inventario</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Toma de Inventario <input type="text" id="casino-name" placeholder="Ingrese Nombre del Casino"></h1>
+        <div id="fecha-inventario"></div>
+        <div id="total-inventario"></div>
+    </div>
+
+    <div class="controls">
+        <button id="btn-borrar-historial">Borrar Historial</button>
+        <input type="file" id="upload-excel" accept=".xlsx, .xls">
+        <button id="btn-descargar-excel">Descargar Excel</button>
+    </div>
+
+    <h2>Agregar Nuevo Item</h2>
+    <form id="add-item-form">
+        <label for="codigo">Código:</label>
+        <input type="text" id="codigo" required>
+
+        <label for="producto">Producto:</label>
+        <input type="text" id="producto" required>
+
+        <label for="unidad">Unidad (UN):</label>
+        <input type="text" id="unidad">
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="text" id="cantidad" value="" placeholder="Ingrese cantidad (ej: 10,88)" required>
+
+        <label for="valor">Valor:</label>
+        <input type="number" id="valor" min="0" value="0" required>
+
+        <button type="button" id="btn-agregar-item">Agregar Item</button>
+    </form>
+
+    <h2>Inventario Actual</h2>
+    <table id="inventory-table">
+        <thead>
+            <tr>
+                <th>CODIGO</th>
+                <th>PRODUCTO</th>
+                <th>UN</th>
+                <th>CANTIDAD</th>
+                <th>VALOR</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody id="inventory-body">
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>
