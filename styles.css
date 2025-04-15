@@ -153,3 +153,22 @@ h2 {
     border-radius: 3px;
     font-size: 0.9em;
 }
+body::after {
+    content: "By José Recart";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    color: rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    pointer-events: none;
+    transform: rotate(-30deg);
+    letter-spacing: 2px;
+}
